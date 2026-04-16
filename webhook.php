@@ -12,7 +12,7 @@ $repo = $data['repository']['full_name'];
 $user = $data['pusher']['name'];
 $message = $data['head_commit']['message'];
 
-$telegramToken = "YOUR_BOT_TOKEN";
+$telegramToken = "8622243466:AAEBsrp0SpDF4ChbkbcsMka_TYXbDPI1ai0";
 $chatId = "YOUR_CHAT_ID";
 
 $text = "GitHub Update Alert\n\n";
