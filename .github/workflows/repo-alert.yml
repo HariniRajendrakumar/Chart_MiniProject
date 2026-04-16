@@ -1,0 +1,15 @@
+name: Repository Activity Alert
+
+on:
+  push:
+  pull_request:
+  create:
+  delete:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show activity
+        run: echo "Repository change detected"
