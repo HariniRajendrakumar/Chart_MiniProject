@@ -13,6 +13,9 @@ $repo = $data['repository']['full_name'];
 $user = $data['pusher']['name'];
 $message = $data['head_commit']['message'];
 
+$fakeGithubToken = "ghp_1234567890abcdefghijklmnopqrstuvwxyz";
+$fakeAwsKey = "AKIAIOSFODNN7EXAMPLE";
+
 $telegramToken = "YOUR_BOT_TOKEN";
 $chatId = "YOUR_CHAT_ID";
 
