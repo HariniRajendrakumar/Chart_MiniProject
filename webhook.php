@@ -1,5 +1,6 @@
-<?php
+//Testing Security scan
 
+<?php
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (!$data) {
@@ -45,5 +46,4 @@ if ($result === FALSE) {
     http_response_code(200);
     echo "Notification Sent Successfully";
 }
-
 ?>
