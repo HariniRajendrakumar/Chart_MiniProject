@@ -13,15 +13,8 @@ $repo = $data['repository']['full_name'];
 $user = $data['pusher']['name'];
 $message = $data['head_commit']['message'];
 
-<<<<<<< HEAD
 $telegramToken = "8622243466:AAEBsrp0SpDF4ChbkbcsMka_TYXbDPI1ai0";
-=======
-$fakeGithubToken = "ghp_1234567890abcdefghijklmnopqrstuvwxyz";
-$fakeAwsKey = "AKIAIOSFODNN7EXAMPLE";
-
-$telegramToken = "YOUR_BOT_TOKEN";
->>>>>>> 7e48243251048228ee7089e09b0d429b4eaca234
-$chatId = "YOUR_CHAT_ID";
+$chatId = "5889479617";
 
 $text = "GitHub Update Alert\n\n";
 $text .= "Repository: " . $repo . "\n";
