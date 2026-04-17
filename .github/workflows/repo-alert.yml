@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: GitHub Repository Activity Alert
           to: harinirajendran2507@gmail.com
-          from: ${{ secrets.EMAIL_USERNAME }}
+          from: harinirajendran2507@gmail.com
           body: |
             Repository activity detected.
 
