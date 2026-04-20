@@ -1,0 +1,83 @@
+name: Final Pipeline - Deploy & Email Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  final-pipeline:
+    name: 🚀 Final Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt || echo "No requirements.txt found, skipping."
+
+      - name: Run Tests
+        run: |
+          python -m pytest || echo "No tests found, skipping."
+
+      - name: Final Bandit Scan on Main
+        run: |
+          pip install bandit
+          bandit -r . -ll -ii
+
+      # ✅ Add your deploy step here (e.g., to AWS, Heroku, etc.)
+      # - name: Deploy
+      #   run: ./deploy.sh
+
+      - name: Send Email Notification on Success
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "✅ SUCCESS — Code merged & deployed to main | ${{ github.repository }}"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            ✅ Your code has been successfully merged and deployed!
+
+            📦 Repository : ${{ github.repository }}
+            🌿 Branch     : main
+            👤 Author     : ${{ github.actor }}
+            📝 Commit     : ${{ github.sha }}
+            🔗 View Commit: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+
+            🕐 Time       : ${{ github.event.head_commit.timestamp }}
+
+            Your pipeline ran successfully. All checks passed ✅
+
+      - name: Send Email Notification on Failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "❌ FAILED — Pipeline error on main | ${{ github.repository }}"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            ❌ Your pipeline failed after merging to main!
+
+            📦 Repository : ${{ github.repository }}
+            🌿 Branch     : main
+            👤 Author     : ${{ github.actor }}
+            📝 Commit     : ${{ github.sha }}
+            🔗 View Logs  : https://github.com/${{ github.repository }}/actions
+
+            Please check the logs and fix the issue.

@@ -1,0 +1,53 @@
+name: CI Pipeline - Security Check & Merge Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  bandit-security-check:
+    name: 🔍 Bandit Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit Security Check
+        run: |
+          bandit -r . -f json -o bandit-report.json || true
+          bandit -r . -ll -ii
+        # -ll = LOW level issues and above
+        # -ii = MEDIUM confidence and above
+
+      - name: Upload Bandit Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: bandit-security-report
+          path: bandit-report.json
+
+      - name: Fail if High Severity Issues Found
+        run: |
+          bandit -r . -lll -iii --exit-zero
+          RESULT=$(bandit -r . -lll -iii -f json | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          high = [i for i in data['results'] if i['issue_severity'] == 'HIGH']
+          print(len(high))
+          ")
+          if [ "$RESULT" -gt "0" ]; then
+            echo "❌ HIGH severity security issues found! Blocking merge."
+            exit 1
+          else
+            echo "✅ No HIGH severity issues. Safe to merge."
+          fi
