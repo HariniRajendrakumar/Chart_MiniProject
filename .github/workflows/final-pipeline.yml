@@ -7,7 +7,7 @@ on:
 
 jobs:
   final-pipeline:
-    name: 🚀 Final Build & Deploy
+    name:  Final Build & Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +32,7 @@ jobs:
           pip install bandit
           bandit -r . -ll -ii
 
-      # ✅ Add your deploy step here (e.g., to AWS, Heroku, etc.)
+      #  Add your deploy step here (e.g., to AWS, Heroku, etc.)
       # - name: Deploy
       #   run: ./deploy.sh
 
@@ -44,21 +44,21 @@ jobs:
           server_port: 587
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "✅ SUCCESS — Code merged & deployed to main | ${{ github.repository }}"
+          subject: " SUCCESS — Code merged & deployed to main | ${{ github.repository }}"
           to: ${{ secrets.NOTIFY_EMAIL }}
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           body: |
-            ✅ Your code has been successfully merged and deployed!
+             Your code has been successfully merged and deployed!
 
-            📦 Repository : ${{ github.repository }}
-            🌿 Branch     : main
-            👤 Author     : ${{ github.actor }}
-            📝 Commit     : ${{ github.sha }}
-            🔗 View Commit: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+             Repository : ${{ github.repository }}
+             Branch     : main
+             Author     : ${{ github.actor }}
+             Commit     : ${{ github.sha }}
+             View Commit: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
 
-            🕐 Time       : ${{ github.event.head_commit.timestamp }}
+             Time       : ${{ github.event.head_commit.timestamp }}
 
-            Your pipeline ran successfully. All checks passed ✅
+            Your pipeline ran successfully. All checks passed 
 
       - name: Send Email Notification on Failure
         if: failure()
@@ -68,16 +68,16 @@ jobs:
           server_port: 587
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "❌ FAILED — Pipeline error on main | ${{ github.repository }}"
+          subject: " FAILED — Pipeline error on main | ${{ github.repository }}"
           to: ${{ secrets.NOTIFY_EMAIL }}
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           body: |
-            ❌ Your pipeline failed after merging to main!
+             Your pipeline failed after merging to main!
 
-            📦 Repository : ${{ github.repository }}
-            🌿 Branch     : main
-            👤 Author     : ${{ github.actor }}
-            📝 Commit     : ${{ github.sha }}
-            🔗 View Logs  : https://github.com/${{ github.repository }}/actions
+             Repository : ${{ github.repository }}
+             Branch     : main
+             Author     : ${{ github.actor }}
+             Commit     : ${{ github.sha }}
+             View Logs  : https://github.com/${{ github.repository }}/actions
 
             Please check the logs and fix the issue.
