@@ -70,4 +70,4 @@ jobs:
             Commit     : ${{ github.sha }}
             View Logs  : https://github.com/${{ github.repository }}/actions
 
-            Please check the logs and fix the issue.
+            Please check the logs and fix the issue...
